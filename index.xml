@@ -6,10 +6,20 @@
     <description>Recent content on Harold</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 06 Dec 2019 09:34:15 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 06 Dec 2019 10:50:44 +0800</lastBuildDate>
     
 	<atom:link href="https://harold2017.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>actor VS. channel</title>
+      <link>https://harold2017.github.io/posts/actor_in_action/actor_vs_channel/</link>
+      <pubDate>Fri, 06 Dec 2019 10:50:44 +0800</pubDate>
+      
+      <guid>https://harold2017.github.io/posts/actor_in_action/actor_vs_channel/</guid>
+      <description>Actor Model An actor is the primitive unit of computation. It receives and sends messages and processes them. Since actor communicates with messages and does NOT have shared states, actor is completely isolated, which means it can be the basis of a distributed system.
+Actors are like ants: in actor model, everything is an actor and they talk with messages where unique addresses (to identify who i am) are required.</description>
+    </item>
     
     <item>
       <title>Contact</title>

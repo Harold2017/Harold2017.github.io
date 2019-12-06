@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Harold</title>
-    <link>https://harold2017.github.io/posts/</link>
-    <description>Recent content in Posts on Harold</description>
+    <title>actor in action series on Harold</title>
+    <link>https://harold2017.github.io/series/actor-in-action-series/</link>
+    <description>Recent content in actor in action series on Harold</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Fri, 06 Dec 2019 10:50:44 +0800</lastBuildDate>
     
-	<atom:link href="https://harold2017.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://harold2017.github.io/series/actor-in-action-series/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       <guid>https://harold2017.github.io/posts/actor_in_action/actor_vs_channel/</guid>
       <description>Actor Model An actor is the primitive unit of computation. It receives and sends messages and processes them. Since actor communicates with messages and does NOT have shared states, actor is completely isolated, which means it can be the basis of a distributed system.
 Actors are like ants: in actor model, everything is an actor and they talk with messages where unique addresses (to identify who i am) are required.</description>
-    </item>
-    
-    <item>
-      <title>First</title>
-      <link>https://harold2017.github.io/posts/first/</link>
-      <pubDate>Thu, 05 Dec 2019 17:58:56 +0800</pubDate>
-      
-      <guid>https://harold2017.github.io/posts/first/</guid>
-      <description>Trial Test type Harold interface { Eat() Drink() Sleep() Code() Play() } </description>
     </item>
     
   </channel>
