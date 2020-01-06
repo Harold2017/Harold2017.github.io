@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Harold</title>
-    <link>https://harold2017.github.io/posts/</link>
-    <description>Recent content in Posts on Harold</description>
+    <title>C on Harold</title>
+    <link>https://harold2017.github.io/categories/c/</link>
+    <description>Recent content in C on Harold</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 06 Jan 2020 16:58:30 +0800</lastBuildDate>
     
-	<atom:link href="https://harold2017.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://harold2017.github.io/categories/c/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -27,25 +27,6 @@ thundering herd has been solved after kernel 2.6: (flag: WQ_FLAG_EXCLUSIVE)
 wait-&amp;gt;flags |= WQ_FLAG_EXCLUSIVE;
 as the following shows: only one child process waked up
 ➜ curl -v http://localhost:6000 Worker 1 (pid:24185) starts to accept connections Worker 0 (pid:24184) starts to accept connections Worker 2 (pid:24186) starts to accept connections Worker 3 (pid:24187) starts to accept connections Worker 5 (pid:24189) starts to accept connections Worker 6 (pid:24190) starts to accept connections Worker 7 (pid:24191) starts to accept connections Worker 4 (pid:24188) starts to accept connections Worker 1 successfully accepts connection from 127.</description>
-    </item>
-    
-    <item>
-      <title>actor VS. channel</title>
-      <link>https://harold2017.github.io/posts/actor_in_action/actor_vs_channel/</link>
-      <pubDate>Fri, 06 Dec 2019 10:50:44 +0800</pubDate>
-      
-      <guid>https://harold2017.github.io/posts/actor_in_action/actor_vs_channel/</guid>
-      <description>Actor Model An actor is the primitive unit of computation. It receives and sends messages and processes them. Since actor communicates with messages and does NOT have shared states, actor is completely isolated, which means it can be the basis of a distributed system.
-Actors are like ants: in actor model, everything is an actor and they talk with messages where unique addresses (to identify who i am) are required.</description>
-    </item>
-    
-    <item>
-      <title>First</title>
-      <link>https://harold2017.github.io/posts/first/</link>
-      <pubDate>Thu, 05 Dec 2019 17:58:56 +0800</pubDate>
-      
-      <guid>https://harold2017.github.io/posts/first/</guid>
-      <description>Trial Test type Harold interface { Eat() Drink() Sleep() Code() Play() } </description>
     </item>
     
   </channel>

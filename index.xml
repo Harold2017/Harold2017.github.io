@@ -6,10 +6,28 @@
     <description>Recent content on Harold</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 06 Dec 2019 10:50:44 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jan 2020 16:58:30 +0800</lastBuildDate>
     
 	<atom:link href="https://harold2017.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Thundering Herd</title>
+      <link>https://harold2017.github.io/posts/thundering_herd/</link>
+      <pubDate>Mon, 06 Jan 2020 16:58:30 +0800</pubDate>
+      
+      <guid>https://harold2017.github.io/posts/thundering_herd/</guid>
+      <description>Thundering herd wiki
+code
+main problem: un-necessary context switch, cache miss
+usual way: mutex
+Linux: (Accept) / Select / Poll / Epoll
+(Accept):
+thundering herd has been solved after kernel 2.6: (flag: WQ_FLAG_EXCLUSIVE)
+wait-&amp;gt;flags |= WQ_FLAG_EXCLUSIVE;
+as the following shows: only one child process waked up
+➜ curl -v http://localhost:6000 Worker 1 (pid:24185) starts to accept connections Worker 0 (pid:24184) starts to accept connections Worker 2 (pid:24186) starts to accept connections Worker 3 (pid:24187) starts to accept connections Worker 5 (pid:24189) starts to accept connections Worker 6 (pid:24190) starts to accept connections Worker 7 (pid:24191) starts to accept connections Worker 4 (pid:24188) starts to accept connections Worker 1 successfully accepts connection from 127.</description>
+    </item>
     
     <item>
       <title>actor VS. channel</title>

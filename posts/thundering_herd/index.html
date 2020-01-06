@@ -10,26 +10,26 @@
     <meta name="keywords" content="blog,developer,personal">
 
     <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="First"/>
-<meta name="twitter:description" content="Trial Test type Harold interface { Eat() Drink() Sleep() Code() Play() } "/>
+<meta name="twitter:title" content="Thundering Herd"/>
+<meta name="twitter:description" content="thundering herd"/>
 
-    <meta property="og:title" content="First" />
-<meta property="og:description" content="Trial Test type Harold interface { Eat() Drink() Sleep() Code() Play() } " />
+    <meta property="og:title" content="Thundering Herd" />
+<meta property="og:description" content="thundering herd" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://harold2017.github.io/posts/first/" />
-<meta property="article:published_time" content="2019-12-05T17:58:56+08:00" />
-<meta property="article:modified_time" content="2019-12-05T17:58:56+08:00" />
+<meta property="og:url" content="https://harold2017.github.io/posts/thundering_herd/" />
+<meta property="article:published_time" content="2020-01-06T16:58:30+08:00" />
+<meta property="article:modified_time" content="2020-01-06T16:58:30+08:00" />
 
 
     
-      <base href="https://harold2017.github.io/posts/first/">
+      <base href="https://harold2017.github.io/posts/thundering_herd/">
     
     <title>
-  First · Harold
+  Thundering Herd · Harold
 </title>
 
     
-      <link rel="canonical" href="https://harold2017.github.io/posts/first/">
+      <link rel="canonical" href="https://harold2017.github.io/posts/thundering_herd/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
@@ -101,37 +101,113 @@
     <article>
       <header>
         <div class="post-title">
-          <h1 class="title">First</h1>
+          <h1 class="title">Thundering Herd</h1>
         </div>
         <div class="post-meta">
           <div class="date">
             <span class="posted-on">
               <i class="fas fa-calendar"></i>
-              <time datetime='2019-12-05T17:58:56&#43;08:00'>
-                December 5, 2019
+              <time datetime='2020-01-06T16:58:30&#43;08:00'>
+                January 6, 2020
               </time>
             </span>
             <span class="reading-time">
               <i class="fas fa-clock"></i>
-              One minute read
+              2 minutes read
             </span>
           </div>
-          
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://harold2017.github.io/categories/server/">Server</a>
+      <span class="separator">•</span>
+    <a href="https://harold2017.github.io/categories/c/">C</a></div>
+
           
         </div>
       </header>
 
       <div>
-        <h1 id="trial">Trial</h1>
-<h2 id="test">Test</h2>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="font-weight:bold">type</span> Harold <span style="font-weight:bold">interface</span> {
-    Eat()
-    Drink()
-    Sleep()
-    Code()
-    Play()
-}
-</code></pre></div>
+        <h2 id="thundering-herd">Thundering herd</h2>
+<p><a href="https://en.wikipedia.org/wiki/Thundering_herd_problem">wiki</a></p>
+<p><a href="https://github.com/Harold2017/ThunderingHerd">code</a></p>
+<p>main problem: un-necessary context switch, cache miss</p>
+<p>usual way: mutex</p>
+<p>Linux: (Accept) / Select / Poll / Epoll</p>
+<p>(Accept):</p>
+<p>thundering herd has been solved after kernel 2.6: (flag: <code>WQ_FLAG_EXCLUSIVE</code>)</p>
+<p><code>wait-&gt;flags |= WQ_FLAG_EXCLUSIVE;</code></p>
+<p>as the following shows: only one child process waked up</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">➜  curl -v http://localhost:6000
+
+Worker 1 (pid:24185) starts to accept connections
+Worker 0 (pid:24184) starts to accept connections
+Worker 2 (pid:24186) starts to accept connections
+Worker 3 (pid:24187) starts to accept connections
+Worker 5 (pid:24189) starts to accept connections
+Worker 6 (pid:24190) starts to accept connections
+Worker 7 (pid:24191) starts to accept connections
+Worker 4 (pid:24188) starts to accept connections
+Worker 1 successfully accepts connection from 127.0.0.1:63717
+Worker 1 (pid:24185) starts to accept connections
+</code></pre></div><p>Epoll:</p>
+<ul>
+<li>epoll_create before fork
+<ul>
+<li>all child processes share the same epoll events, all will be waken up
+<ul>
+<li>as the following shows: 8 workers, 4 were waken up, but only one successfully accepted connection, others got <code>EAGAIN</code></li>
+</ul>
+</li>
+<li>but this can be solved as <code>accept</code> by adding flag <code>EPOLLEXCLUSIVE</code>
+<ul>
+<li>notice: <code>EPOLLEXCLUSIVE</code> only guaranteed one or more of the epoll file descriptors will receive an event but NOT exactly one</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>epoll_create after fork
+<ul>
+<li>every child process keeps its internal event loop, and only registers its own events, so if they listen to the same fd, thundering herd will happen -&gt; need mutex</li>
+<li>lock on <code>mmap</code> or file lock</li>
+<li>one fd &lt;-&gt; one worker</li>
+<li>process first get lock then accept, others who not get lock just remove fd from its events</li>
+<li><code>Nginx</code></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="font-style:italic"># epoll_create before fork</span>
+Create worker 0 (pid:29406)
+Create worker 1 (pid:29407)
+Create worker 2 (pid:29408)
+Create worker 3 (pid:29409)
+Create worker 5 (pid:29411)
+Create worker 6 (pid:29412)
+Create worker 4 (pid:29410)
+Create worker 7 (pid:29413)
+
+➜  curl -v http://localhost:6000
+
+Worker 7 (pid:29413) starts to accept connections
+Worker 4 (pid:29410) starts to accept connections
+Worker 5 (pid:29411) starts to accept connections
+Worker 4 failed to accept connection
+Worker 6 (pid:29412) starts to accept connections
+Worker 7 successfully accepts connection from 127.0.0.1:39143
+Worker 5 failed to accept connection
+Worker 6 failed to accept connection
+
+<span style="font-style:italic"># strace</span>
+[pid 30310] accept(3, 0x7ffc73eb3ec0, [16]) = -1 EAGAIN (Resource temporarily unavailable)
+
+<span style="font-style:italic"># after add flag: `EPOLLEXCLUSIVE`, two processes received waken-up events</span>
+Worker 7 (pid:30716) starts to accept connections
+Worker 6 (pid:30715) starts to accept connections
+Worker 7 successfully accepts connection from 127.0.0.1:19688
+Worker 6 failed to accept connection
+</code></pre></div><h2 id="go-fd-lock">Go fd lock</h2>
+<p>wrapper of <code>flock</code></p>
+<p><a href="https://github.com/Harold2017/GoContainer/blob/master/lock/fdlock.go">code</a></p>
+
       </div>
 
       <footer>
